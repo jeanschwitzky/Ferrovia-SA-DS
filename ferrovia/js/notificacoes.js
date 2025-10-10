@@ -22,12 +22,12 @@ addBtn.addEventListener('click', () => {
     addBtn.style.display = 'none';
 
     const hoje = new Date();
-    document.getElementById('dataNotificacao').value = hoje.toISOString().split('T')[0];
+    document.getElementsByName('data_notificacao').value = hoje.toISOString().split('T')[0];
 
     const agora = new Date();
     const horas = String(agora.getHours()).padStart(2, '0');
     const minutos = String(agora.getMinutes()).padStart(2, '0');
-    document.getElementById('horaNotificacao').value = `${horas}:${minutos}`;
+    document.getElementsByName('hora_notificacao').value = '${horas}:${minutos};'
 });
 
 cancelBtn.addEventListener('click', () => {
@@ -38,74 +38,70 @@ cancelBtn.addEventListener('click', () => {
 
 removeAllBtn.addEventListener('click', () => {
     if (confirm('Tem certeza que deseja remover TODAS as notificações?')) {
-        notificacoes.length = 0;
-        renderizarNotificacoes();
+        fetch("excluir_todas_notificacoes.php")
+            .then(() => {
+                location.reload();
+            });
     }
 });
 
-notificacaoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("listar_notificacoes.php")
+        .then((response) => response.json())
+        .then((data) => {
+            cardsContainer.innerHTML = '';
 
-    const novaNotificacao = {
-        id: Date.now(),
-        tipo: document.getElementById('tipoNotificacao').value,
-        trem: document.getElementById('tremNotificacao').value,
-        localizacao: document.getElementById('localizacaoNotificacao').value,
-        problema: document.getElementById('problemaNotificacao').value,
-        data: formatarData(document.getElementById('dataNotificacao').value),
-        hora: document.getElementById('horaNotificacao').value
-    };
-
-    notificacoes.unshift(novaNotificacao);
-    renderizarNotificacoes();
-
-    notificacaoForm.reset();
-    notificacaoForm.style.display = 'none';
-    addBtn.style.display = 'flex';
-});
-
-function removerNotificacao(id) {
-    if (confirm('Tem certeza que deseja remover esta notificação?')) {
-        const index = notificacoes.findIndex(notif => notif.id === id);
-        if (index !== -1) {
-            notificacoes.splice(index, 1);
-            renderizarNotificacoes();
-        }
-    }
-}
-
-function renderizarNotificacoes() {
-    cardsContainer.innerHTML = '';
-
-    if (notificacoes.length === 0) {
-        cardsContainer.innerHTML = `
+            if (data.length === 0) {
+                cardsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="bi bi-bell"></i>
                         <h3>Nenhuma notificação encontrada</h3>
                         <p>Clique em "Adicionar" para criar uma nova notificação</p>
                     </div>
                 `;
-        return;
-    }
+                return;
+            }
 
-    notificacoes.forEach(notificacao => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-                    <div class="card-title">${notificacao.tipo}</div>
-                    <div class="card-text">
-                        <p><strong>Trem:</strong> ${notificacao.trem}</p>
-                        <p><strong>Localização:</strong> ${notificacao.localizacao}</p>
-                        <p><strong>Problema:</strong> ${notificacao.problema}</p>
-                        <p><strong>Dia:</strong> ${notificacao.data}</p>
-                        <p class="horario"><strong>Horário:</strong> ${notificacao.hora}</p>
+            data.forEach(notificacao => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-title">${notificacao.nome_notificacao}</div>
+                    <div class="card-text"> 
+                        <p><strong>Localização:</strong> ${notificacao.localizacao_notificacao}</p>
+                        <p><strong>Problema:</strong> ${notificacao.problema_notificacao}</p>
+                        <p><strong>Dia:</strong> ${notificacao.data_notificacao}</p>
+                        <p class="horario"><strong>Horário:</strong> ${notificacao.hora_notificacao}</p>
                     </div>
-                    <button class="delete-btn" onclick="removerNotificacao(${notificacao.id})">
+                    <button class="edit-btn" onclick="editarNotificacao(${notificacao.pk_notificacao})">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="delete-btn" onclick="removerNotificacao(${notificacao.pk_notificacao})">
                         <i class="bi bi-trash"></i>
                     </button>
                 `;
-        cardsContainer.appendChild(card);
-    });
+                cardsContainer.appendChild(card);
+            });
+        })
+        .catch((error) => console.error("Erro ao buscar itens:", error));
+});
+
+function removerNotificacao(id) {
+    if (confirm('Tem certeza que deseja remover esta notificação?')) {
+        fetch("excluir_notificacoes.php?id=" + encodeURIComponent(id))
+            .then(() => {
+                location.reload();
+            });
+    }
+}
+
+function editarNotificacao(id) {
+    if (confirm('Tem certeza que deseja editar esta notificação?')) {
+        fetch("editar_notificacoes.php?id=" + encodeURIComponent(id))
+            .then(() => {
+                location.reload();
+            });
+    }
 }
 
 menuToggle.addEventListener('click', () => {
@@ -125,34 +121,3 @@ const dataFormatada = formatarData(hoje.toISOString());
 const horas = String(hoje.getHours()).padStart(2, '0');
 const minutos = String(hoje.getMinutes()).padStart(2, '0');
 
-notificacoes.push(
-    {
-        id: 1,
-        tipo: "Falha Mecânica",
-        trem: "#203",
-        localizacao: "Estação Central",
-        problema: "Falha no sistema de freios",
-        data: dataFormatada,
-        hora: "16:00"
-    },
-    {
-        id: 2,
-        tipo: "Atraso",
-        trem: "#204",
-        localizacao: "Linha Norte",
-        problema: "Atraso de 15 minutos devido a obstrução na via",
-        data: dataFormatada,
-        hora: `${horas}:${minutos}`
-    },
-    {
-        id: 3,
-        tipo: "Interdição",
-        trem: "#115",
-        localizacao: "Ponte Leste",
-        problema: "Trecho interditado para manutenção emergencial",
-        data: dataFormatada,
-        hora: "14:30"
-    }
-);
-
-renderizarNotificacoes();

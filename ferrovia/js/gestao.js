@@ -22,12 +22,12 @@ addBtn.addEventListener('click', () => {
     addBtn.style.display = 'none';
 
     const hoje = new Date();
-    document.getElementById('dataNotificacao').value = hoje.toISOString().split('T')[0];
+    document.getElementsByName('data_rota').value = hoje.toISOString().split('T')[0];
 
     const agora = new Date();
     const horas = String(agora.getHours()).padStart(2, '0');
     const minutos = String(agora.getMinutes()).padStart(2, '0');
-    document.getElementById('horaNotificacao').value = `${horas}:${minutos}`;
+    document.getElementsByName('hora_rota').value = `${horas}:${minutos}`;
 });
 
 cancelBtn.addEventListener('click', () => {
@@ -38,74 +38,60 @@ cancelBtn.addEventListener('click', () => {
 
 removeAllBtn.addEventListener('click', () => {
     if (confirm('Tem certeza que deseja remover TODAS as rotas?')) {
-        notificacoes.length = 0;
-        renderizarNotificacoes();
+        fetch("excluir_todas_rotas.php")
+            .then(() => {
+                location.reload();
+            });
     }
 });
 
-notificacaoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("listar_rotas.php")
+        .then((response) => response.json())
+        .then((data) => {
+            cardsContainer.innerHTML = '';
 
-    const novaNotificacao = {
-        id: Date.now(),
-        tipo: document.getElementById('tipoNotificacao').value,
-        trem: document.getElementById('tremNotificacao').value,
-        localizacao: document.getElementById('localizacaoNotificacao').value,
-        problema: document.getElementById('problemaNotificacao').value,
-        data: formatarData(document.getElementById('dataNotificacao').value),
-        hora: document.getElementById('horaNotificacao').value
-    };
-
-    notificacoes.unshift(novaNotificacao);
-    renderizarNotificacoes();
-
-    notificacaoForm.reset();
-    notificacaoForm.style.display = 'none';
-    addBtn.style.display = 'flex';
-});
-
-function removerNotificacao(id) {
-    if (confirm('Tem certeza que deseja remover esta rota?')) {
-        const index = notificacoes.findIndex(notif => notif.id === id);
-        if (index !== -1) {
-            notificacoes.splice(index, 1);
-            renderizarNotificacoes();
-        }
-    }
-}
-
-function renderizarNotificacoes() {
-    cardsContainer.innerHTML = '';
-
-    if (notificacoes.length === 0) {
-        cardsContainer.innerHTML = `
+            if (data.length === 0) {
+                cardsContainer.innerHTML = `
                    <div class="empty-state">
                         <i class="bi bi-sign-turn-slight-right"></i>
                         <h3>Nenhuma rota encontrada</h3>
                         <p>Clique em "Adicionar" para criar uma nova rota</p>
                     </div>
                 `;
-        return;
-    }
+                return;
+            }
 
-    notificacoes.forEach(notificacao => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-                    <div class="card-title">${notificacao.tipo}</div>
+            data.forEach(rota => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-title">${rota.nome_rota}</div>
                     <div class="card-text">
-                        <p><strong>Status</strong> ${notificacao.trem}</p>
-                        <p><strong>Local de Partida:</strong> ${notificacao.localizacao}</p>
-                        <p><strong>Local de Chegada:</strong> ${notificacao.problema}</p>
-                        <p><strong>Dia:</strong> ${notificacao.data}</p>
-                        <p class="horario"><strong>Horário:</strong> ${notificacao.hora}</p>
+                        <p><strong>Status</strong> ${rota.status_rota}</p>
+                        <p><strong>Local de Partida:</strong> ${rota.partida_rota}</p>
+                        <p><strong>Local de Chegada:</strong> ${rota.chegada_rota}</p>
+                        <p><strong>Dia:</strong> ${rota.data_rota}</p>
+                        <p class="horario"><strong>Horário:</strong> ${rota.hora_rota}</p>
                     </div>
-                    <button class="delete-btn" onclick="removerNotificacao(${notificacao.id})">
+                    <button class="delete-btn" onclick="removerRota(${rota.pk_rota})">
                         <i class="bi bi-trash"></i>
                     </button>
                 `;
-        cardsContainer.appendChild(card);
-    });
+                cardsContainer.appendChild(card);
+            });
+        })
+        .catch((error) => console.error("Erro ao buscar itens:", error));
+});
+
+function removerRota(id) {
+    if (confirm('Tem certeza que deseja remover esta rota?')) {
+        fetch("excluir_rota.php?id=" + encodeURIComponent(id))
+            .then(() => {
+                location.reload();
+            });
+    }
+
 }
 
 menuToggle.addEventListener('click', () => {

@@ -25,9 +25,9 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 <ul id="menu">
                     <a class="bi bi-list" id="menuToggle"></a>
                     <div id="titulo">
-                    <h1>Gerenciamento de Sensores</h1>
+                        <h1>Gerenciamento de Sensores</h1>
                     </div>
-                 <div class="bem-vindo">
+                    <div class="bem-vindo">
                         <a class="bi bi-person-circle" href="perfil.php"></a>
                         <?php
                         echo "<p>Bem-vindo, " . htmlspecialchars($_SESSION["nome_usuario"]) . "!</p>";
@@ -44,37 +44,36 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 <a class="menu-item" href="perfil.php">Perfil</a>
                 <a class="menu-item" href="dashboard.php">Dashboard Geral</a>
                 <a class="menu-item" href="notificacoes.php">Notificações</a>
-                <a class="menu-item" href="manuntencao.php">Manutenção</a>
+                <a class="menu-item" href="manutencao.php">Manutenção</a>
                 <a class="menu-item" href="gestao.php">Gestão de rotas</a>
                 <a class="menu-item" href="relatorios.php">Relatórios e Análises</a>
-                <a class="menu-item" href="usuarios.php">Gerenciamento de Usuários</a>
                 <a class="menu-item" href="sensores.php">Sensores</a>
+                <a class="menu-item" href="trem.php">Trem</a>
             </ul>
         </div>
     </header>
 
     <main>
         <section class="conteudo">
-            <form id="sensorForm">
+            <form id="sensorForm" action="cadastrar_sensores.php" method="POST">
                 <div class="form-group">
-                    <label for="tipoSensor">Tipo de Sensor:</label>
-                    <select id="tipoSensor" required>
+                    <label for="tipo_sensor">Tipo de Sensor:</label>
+                    <select name="tipo_sensor" required>
                         <option value="Temperatura">Temperatura</option>
                         <option value="Pressão">Pressão</option>
                         <option value="Umidade">Umidade</option>
                         <option value="Vibração">Vibração</option>
-                        <option value="Outro">Outro</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="localizacaoSensor">Localização:</label>
-                    <input type="text" id="localizacaoSensor" placeholder="Ex: Estação 1" required>
+                    <label for="localizacao_sensor">Localização:</label>
+                    <input type="text" name="localizacao_sensor" placeholder="Ex: Estação 1" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="statusSensor">Status:</label>
-                    <select id="statusSensor" required>
+                    <label for="status_sensor">Status:</label>
+                    <select name="status_sensor" required>
                         <option value="Ativo">Ativo</option>
                         <option value="Inativo">Inativo</option>
                         <option value="Manutenção">Manutenção</option>
@@ -82,8 +81,8 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 </div>
 
                 <div class="form-group">
-                    <label for="dataInstalacao">Data de Instalação:</label>
-                    <input type="date" id="dataInstalacao" required>
+                    <label for="data_instalacao">Data de Instalação:</label>
+                    <input type="date" name="data_instalacao" required>
                 </div>
 
                 <div class="form-buttons">

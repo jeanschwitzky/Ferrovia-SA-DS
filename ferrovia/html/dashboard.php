@@ -48,12 +48,11 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 <a class="menu-item" href="perfil.php">Perfil</a>
                 <a class="menu-item" href="dashboard.php">Dashboard Geral</a>
                 <a class="menu-item" href="notificacoes.php">Notificações</a>
-                <a class="menu-item" href="manuntencao.php">Manutenção</a>
+                <a class="menu-item" href="manutencao.php">Manutenção</a>
                 <a class="menu-item" href="gestao.php">Gestão de rotas</a>
                 <a class="menu-item" href="relatorios.php">Relatórios e Análises</a>
-                <a class="menu-item" href="usuarios.php">Gerenciamento de Usuários</a>
                 <a class="menu-item" href="sensores.php">Sensores</a>
-                <a class="menu-item" href="gerenciamento_trens.php">Trem</a>
+                <a class="menu-item" href="trem.php">Trem</a>
             </ul>
         </div>
     </header>

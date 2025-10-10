@@ -6,16 +6,15 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/relatorio.css">
+    <link rel="stylesheet" href="../css/gerenciamento_trens.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>Ferrovia</title>
+    <title>Ferrovia - Trens</title>
 </head>
 
 <body>
@@ -25,16 +24,15 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 <ul id="menu">
                     <a class="bi bi-list" id="menuToggle"></a>
                     <div id="titulo">
-                        <h1>Relatórios e Análises</h1>
+                        <h1>Gerenciamento de Trens</h1>
                     </div>
                     <div class="bem-vindo">
-                        <a class="bi bi-person-circle" href="perfil.php"></a>
+                        <a class="bi bi-person-circle" href="perfil.php" title="Perfil"></a>
                         <?php
-                        echo "<p>Bem-vindo, " . htmlspecialchars($_SESSION["nome_usuario"]) . "!</p>";
-
+                        echo "<span>Bem-vindo, " . htmlspecialchars($_SESSION["nome_usuario"]) . "!</span>";
                         ?>
                         <a href="sair.php">
-                            <input type="button" value="Sair" event="sair.php" class="sair-button">
+                            <button class="sair-button">Sair</button>
                         </a>
                     </div>
                 </ul>
@@ -53,33 +51,33 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
             </ul>
         </div>
     </header>
-
     <main>
         <section class="conteudo">
-            <form id="notificacaoForm" action="cadastrar_relatorio.php" method="POST" enctype="multipart/form-data">
+            <form id="tremForm" style="display:none;"  action="cadastrar_trem.php" method="POST">
                 <div class="form-group">
-                    <label for="nome_relatorio">Nome do Relatório</label>
-                    <input type="text" name="nome_relatorio" placeholder="Ex: Balanço Geral" required>
+                    <label for="nome_trem">Nome do Trem:</label>
+                    <input type="text" name="nome_trem" placeholder="Ex: Expresso Sul" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="arquivo_relatorio">Arquivo:</label>
-                    <input type="file" name="arquivo_relatorio"  required>
+                    <label for="data_operacao">Data de Operação:</label>
+                    <input type="date" name="data_operacao" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="conteudo_relatorio">Conteúdo:</label>
-                    <textarea type="text" name="conteudo_relatorio" rows="3" required></textarea>
+                    <label for="capacidade_trem">Capacidade de Passageiros:</label>
+                    <input type="number" name="capacidade_trem"  placeholder="Ex: 600">
                 </div>
-
                 <div class="form-group">
-                    <label for="data_relatorio">Data:</label>
-                    <input type="date" name="data_relatorio" required>
+                    <label for="velocidade_trem">Velocidade Máxima (km/h):</label>
+                    <input type="number" name="velocidade_trem"  placeholder="Ex: 300">
                 </div>
-
                 <div class="form-group">
-                    <label for="hora_relatorio">Hora:</label>
-                    <input type="time" id="hora_relatorio" required>
+                    <label for="fabricante_trem">Fabricante / Modelo:</label>
+                    <input type="text" name="fabricante_trem" placeholder="Ex: Siemens Velaro">
+                </div>
+                <div class="form-group">
+                    <label for="observacoes_trem">Observações:</label>
+                    <textarea name="observacoes_trem" 
+                        placeholder="Informações adicionais..."></textarea>
                 </div>
 
                 <div class="form-buttons">
@@ -87,12 +85,10 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                     <button type="button" id="cancelBtn" class="botao-cancelar">Cancelar</button>
                 </div>
             </form>
-
             <div id="cardsContainer"></div>
-
             <div class="flexivel">
                 <button id="addBtn" class="botao-adicionar">
-                    <i class="bi bi-plus-circle" style="font-size: 30px;"></i> Adicionar
+                    <i class="bi bi-plus-circle" style="font-size: 30px;"></i> Adicionar Trem
                 </button>
                 <button id="removeAllBtn" class="botao-remover">
                     <i class="bi bi-trash" style="font-size: 30px;"></i> Remover Todos
@@ -100,7 +96,7 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
             </div>
         </section>
     </main>
-    <script src="../js/relatorios.js"></script>
+    <script src="../js/trem.js"></script>
 </body>
 
 </html>

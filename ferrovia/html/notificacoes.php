@@ -5,6 +5,12 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_SESSION['erro'])) {
+    echo "<script>alert('" . $_SESSION['erro'] . " (Código: " . $_SESSION['erro_codigo'] . ")');</script>";
+    unset($_SESSION['erro']);
+    unset($_SESSION['erro_codigo']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,19 +53,18 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 <a class="menu-item" href="perfil.php">Perfil</a>
                 <a class="menu-item" href="dashboard.php">Dashboard Geral</a>
                 <a class="menu-item" href="notificacoes.php">Notificações</a>
-                <a class="menu-item" href="manuntencao.php">Manutenção</a>
+                <a class="menu-item" href="manutencao.php">Manutenção</a>
                 <a class="menu-item" href="gestao.php">Gestão de rotas</a>
                 <a class="menu-item" href="relatorios.php">Relatórios e Análises</a>
-                <a class="menu-item" href="usuarios.php">Gerenciamento de Usuários</a>
                 <a class="menu-item" href="sensores.php">Sensores</a>
+                <a class="menu-item" href="trem.php">Trem</a>
             </ul>
         </div>
     </header>
 
     <main>
         <section class="conteudo">
-            <form id="notificacaoForm" action="cadastrar_notificacao.php" method="POST"
-                onsubmit="return confirm('Deseja realmente cadastrar esta atividade?')">
+            <form id="notificacaoForm" action="cadastrar_notificacao.php" method="POST">
                 <div class="form-group">
                     <label for="nome_notificacao">Nome:</label>
                     <input type="text" name="nome_notificacao" placeholder="Ex: Alerta de Interdição" required>
@@ -91,7 +96,8 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
                 </div>
             </form>
 
-            <div id="cardsContainer"></div>
+            <div id="cardsContainer">
+            </div>
 
             <div class="flexivel">
                 <button id="addBtn" class="botao-adicionar">
@@ -103,7 +109,7 @@ if (!isset($_SESSION["conectado"]) || $_SESSION["conectado"] != true) {
             </div>
         </section>
     </main>
-    <script src="../js/notificacoes.js"></script>
+    <<script src="../js/notificacoes.js"></script>
 </body>
 
 </html>

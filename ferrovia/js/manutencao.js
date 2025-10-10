@@ -24,8 +24,8 @@ addBtn.addEventListener('click', () => {
     const hoje = new Date();
     const hojeISO = hoje.toISOString().split('T')[0];
 
-    document.getElementById('dataInicio').value = hojeISO;
-    document.getElementById('dataTermino').value = hojeISO;
+    document.getElementsByName('data_inicio_manutencao').value = hojeISO;
+    document.getElementsByName('data_termino_manutencao').value = hojeISO;
 });
 
 cancelBtn.addEventListener('click', () => {
@@ -35,45 +35,82 @@ cancelBtn.addEventListener('click', () => {
 });
 
 removeAllBtn.addEventListener('click', () => {
-    if (confirm('Tem certeza que deseja remover TODAS as manutencao?')) {
-        notificacoes.length = 0;
-        renderizarNotificacoes();
+    if (confirm('Tem certeza que deseja remover TODAS as manutencoes?')) {
+        fetch("excluir_todas_manutencoes.php")
+            .then(() => {
+                location.reload();
+            });
     }
 });
 
-notificacaoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("listar_manutencao.php")
+        .then((response) => response.json())
+        .then((data) => {
+            cardsContainer.innerHTML = '';
 
-    const novaNotificacao = {
-        id: Date.now(),
-        nomeTrem: document.getElementById('nomeTrem').value,
-        problema: document.getElementById('problema').value,
-        dataInicio: formatarData(document.getElementById('dataInicio').value),
-        dataTermino: formatarData(document.getElementById('dataTermino').value),
-        status: document.getElementById('statusTrem').value
-    };
+            if (data.length === 0) {
+                cardsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-gear"></i>
+                        <h3>Nenhuma manutenção encontrada</h3>
+                        <p>Clique em "Adicionar" para criar uma manutenção</p>
+                    </div>
+                `;
+                atualizarGrafico([]);
+                return;
+            }
 
-    notificacoes.unshift(novaNotificacao);
-    renderizarNotificacoes();
+            data.forEach(manutencao => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                switch (manutencao.status_manutencao) {
+                    case "Concluída":
+                        card.style.borderLeft = "5px solid green";
+                        break;
+                    case "Em atraso":
+                        card.style.borderLeft = "5px solid red";
+                        break;
+                    case "Em Andamento":
+                        card.style.borderLeft = "5px solid orange";
+                        break;
+                    case "Não Iniciada":
+                        card.style.borderLeft = "5px solid gray";
+                        break;
+                    default:
+                        card.style.borderLeft = "5px solid black";
+                }
 
-    notificacaoForm.reset();
-    notificacaoForm.style.display = 'none';
-    addBtn.style.display = 'flex';
+                card.innerHTML = `
+                    <div class="card-title">${manutencao.nome_trem}</div>
+                    <div class="card-text">
+                        <p><strong>Manutenção:</strong> ${manutencao.problema_manutencao}</p>
+                        <p><strong>Data de Início:</strong> ${manutencao.data_inicio_manutencao}</p>
+                        <p><strong>Data de Término:</strong> ${manutencao.data_termino_manutencao}</p>
+                        <p><strong>Status:</strong> ${manutencao.status_manutencao}</p>
+                    </div>
+                    <button class="delete-btn" onclick="removerManutencao(${manutencao.pk_manutencao})">
+                        <i class="bi bi-trash"></i>
+                    </button>`;
+                cardsContainer.appendChild(card);
+            });
+            atualizarGrafico(data);
+        })
+        .catch((error) => console.error("JSON:", error));
 });
 
-function removerNotificacao(id) {
-    if (confirm('Tem certeza que deseja remover esta manutenção?')) {
-        const index = notificacoes.findIndex(notif => notif.id === id);
-        if (index !== -1) {
-            notificacoes.splice(index, 1);
-            renderizarNotificacoes();
-        }
+function removerManutencao(id) {
+    if (confirm('Tem certeza que deseja remover esta manutencao?')) {
+        fetch("excluir_manutencoes.php?id=" + encodeURIComponent(id))
+            .then(() => {
+                location.reload();
+            });
     }
 }
 
 let graficoStatus;
 
-function atualizarGrafico() {
+function atualizarGrafico(manutencoes) {
     const contagemStatus = {
         "Concluída": 0,
         "Em Andamento": 0,
@@ -81,9 +118,9 @@ function atualizarGrafico() {
         "Em atraso": 0
     };
 
-    notificacoes.forEach(n => {
-        if (contagemStatus.hasOwnProperty(n.status)) {
-            contagemStatus[n.status]++;
+    (manutencoes || []).forEach(m => {
+        if (contagemStatus.hasOwnProperty(m.status_manutencao)) {
+            contagemStatus[m.status_manutencao]++;
         }
     });
 
@@ -125,60 +162,6 @@ function atualizarGrafico() {
     });
 }
 
-function renderizarNotificacoes() {
-    cardsContainer.innerHTML = '';
-
-    if (notificacoes.length === 0) {
-        cardsContainer.innerHTML = `
-            <div class="empty-state">
-                <i class="bi bi-gear"></i>
-                <h3>Nenhuma manutenção encontrada</h3>
-                <p>Clique em "Adicionar" para criar uma manutenção</p>
-            </div>
-        `;
-        atualizarGrafico();
-        return;
-    }
-
-    notificacoes.forEach(notificacao => {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        switch (notificacao.status) {
-            case "Concluída":
-                card.style.borderLeft = "5px solid green";
-                break;
-            case "Em atraso":
-                card.style.borderLeft = "5px solid red";
-                break;
-            case "Em Andamento":
-                card.style.borderLeft = "5px solid orange";
-                break;
-            case "Não Iniciada":
-                card.style.borderLeft = "5px solid gray";
-                break;
-            default:
-                card.style.borderLeft = "5px solid black";
-        }
-
-        card.innerHTML = `
-            <div class="card-title">${notificacao.nomeTrem}</div>
-            <div class="card-text">
-                <p><strong>Manutenção:</strong> ${notificacao.problema}</p>
-                <p><strong>Data de Início:</strong> ${notificacao.dataInicio}</p>
-                <p><strong>Data de Término:</strong> ${notificacao.dataTermino}</p>
-                <p><strong>Status:</strong> ${notificacao.status}</p>
-            </div>
-            <button class="delete-btn" onclick="removerNotificacao(${notificacao.id})">
-                <i class="bi bi-trash"></i>
-            </button>
-        `;
-        cardsContainer.appendChild(card);
-    });
-
-    atualizarGrafico();
-}
-
 menuToggle.addEventListener('click', () => {
     sideMenu.classList.toggle('active');
     mainContent.classList.toggle('side-menu-active');
@@ -194,33 +177,3 @@ document.addEventListener('click', (e) => {
 const hoje = new Date();
 const dataFormatada = formatarData(hoje.toISOString());
 
-notificacoes.push(
-    {
-        id: 1,
-        nomeTrem: "Trem 001",
-        problema: "Limpeza no motor",
-        dataInicio: dataFormatada,
-        dataTermino: dataFormatada,
-        status: "Em Andamento"
-    },
-    {
-        id: 2,
-        nomeTrem: "Trem 002",
-        problema: "Troca dos Bicos do Motor",
-        dataInicio: dataFormatada,
-        dataTermino: dataFormatada,
-        status: "Em atraso"
-    },
-    {
-        id: 3,
-        nomeTrem: "Trem 003",
-        problema: "Troca de Óleo",
-        dataInicio: dataFormatada,
-        dataTermino: dataFormatada,
-        status: "Concluída"
-    }
-);
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderizarNotificacoes();
-});

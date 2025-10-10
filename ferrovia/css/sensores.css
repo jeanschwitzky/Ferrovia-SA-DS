@@ -139,7 +139,7 @@ main.side-menu-active {
 /* Cards de notificações */
 .card {
     background: white;
-    border-radius: 40px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
     margin-bottom: 20px;
@@ -310,4 +310,13 @@ input:focus, select:focus, textarea:focus {
     float: right;
     gap: 2rem;
     margin-left: 255px;
+}
+
+#sensorForm {
+    display: none; /* Esconde por padrão */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 30px;
 }
