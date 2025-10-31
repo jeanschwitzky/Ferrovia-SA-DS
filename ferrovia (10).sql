@@ -1,0 +1,313 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Tempo de geração: 24/10/2025 às 14:32
+-- Versão do servidor: 8.0.21
+-- Versão do PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `ferrovia`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `dados_sensores`
+--
+
+CREATE TABLE `dados_sensores` (
+  `pk_dado_sensor` int NOT NULL,
+  `fk_pk_sensor` int NOT NULL,
+  `fk_pk_rota` int NOT NULL,
+  `carimbo_data_dado_sensor` datetime DEFAULT CURRENT_TIMESTAMP,
+  `valor_sensor` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `manutencao`
+--
+
+CREATE TABLE `manutencao` (
+  `pk_manutencao` int NOT NULL,
+  `nome_trem` varchar(55) NOT NULL,
+  `problema_manutencao` varchar(500) NOT NULL,
+  `data_inicio_manutencao` date NOT NULL,
+  `data_termino_manutencao` date NOT NULL,
+  `status_manutencao` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `manutencao`
+--
+
+INSERT INTO `manutencao` (`pk_manutencao`, `nome_trem`, `problema_manutencao`, `data_inicio_manutencao`, `data_termino_manutencao`, `status_manutencao`) VALUES
+(6, 'Trem 6', 'Troca de oleo', '2025-10-01', '2025-10-02', 'Concluída');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `notificacoes`
+--
+
+CREATE TABLE `notificacoes` (
+  `pk_notificacao` int NOT NULL,
+  `nome_notificacao` varchar(87) NOT NULL,
+  `localizacao_notificacao` varchar(87) NOT NULL,
+  `problema_notificacao` varchar(1000) NOT NULL,
+  `data_notificacao` date NOT NULL,
+  `hora_notificacao` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `relatorios`
+--
+
+CREATE TABLE `relatorios` (
+  `pk_relatorio` int NOT NULL,
+  `nome_relatorio` varchar(100) NOT NULL,
+  `arquivo_relatorio` mediumtext NOT NULL,
+  `conteudo_relatorio` varchar(1000) NOT NULL,
+  `data_relatorio` date NOT NULL,
+  `hora_relatorio` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `relatorios`
+--
+
+INSERT INTO `relatorios` (`pk_relatorio`, `nome_relatorio`, `arquivo_relatorio`, `conteudo_relatorio`, `data_relatorio`, `hora_relatorio`) VALUES
+(13, 'teste', 'uploads/1760703701_', 'teste', '2025-10-01', '01:47:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `rotas`
+--
+
+CREATE TABLE `rotas` (
+  `pk_rota` int NOT NULL,
+  `nome_rota` varchar(55) NOT NULL,
+  `status_rota` varchar(50) NOT NULL,
+  `partida_rota` varchar(500) NOT NULL,
+  `chegada_rota` varchar(500) NOT NULL,
+  `data_rota` date NOT NULL,
+  `hora_rota` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `rotas`
+--
+
+INSERT INTO `rotas` (`pk_rota`, `nome_rota`, `status_rota`, `partida_rota`, `chegada_rota`, `data_rota`, `hora_rota`) VALUES
+(5, 'Linha Norte', 'Concluída', 'Sul', 'Sul', '3000-05-08', '08:59:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `sensores`
+--
+
+CREATE TABLE `sensores` (
+  `pk_sensor` int NOT NULL,
+  `tipo_sensor` varchar(100) NOT NULL,
+  `localizacao_sensor` varchar(500) NOT NULL,
+  `status_sensor` varchar(100) NOT NULL,
+  `data_instalacao` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `sensores`
+--
+
+INSERT INTO `sensores` (`pk_sensor`, `tipo_sensor`, `localizacao_sensor`, `status_sensor`, `data_instalacao`) VALUES
+(4, 'Temperatura', 'Rua 1', 'Inativo', '2005-07-04');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `trem`
+--
+
+CREATE TABLE `trem` (
+  `pk_trem` int NOT NULL,
+  `nome_trem` varchar(255) NOT NULL,
+  `data_operacao` date NOT NULL,
+  `capacidade_trem` int NOT NULL,
+  `velocidade_trem` int NOT NULL,
+  `fabricante_trem` varchar(255) NOT NULL,
+  `observacoes_trem` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `trem`
+--
+
+INSERT INTO `trem` (`pk_trem`, `nome_trem`, `data_operacao`, `capacidade_trem`, `velocidade_trem`, `fabricante_trem`, `observacoes_trem`) VALUES
+(4, 'Trem 2', '2009-04-07', 745, 480, 'Siems', 'Teste');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `pk_usuario` int NOT NULL,
+  `nome_usuario` varchar(50) DEFAULT NULL,
+  `email_usuario` varchar(50) DEFAULT NULL,
+  `senha_usuario` varchar(255) DEFAULT NULL,
+  `data_nascimento_usuario` date DEFAULT NULL,
+  `genero_usuario` varchar(15) DEFAULT NULL,
+  `cpf_usuario` char(11) DEFAULT NULL,
+  `endereco_usuario` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `usuario`
+--
+
+INSERT INTO `usuario` (`pk_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `data_nascimento_usuario`, `genero_usuario`, `cpf_usuario`, `endereco_usuario`) VALUES
+(1, 'Laura', 'jean@gmail.com', '12345678', '2025-09-12', 'Masculino', '12345678901', 'Rua Urusanga'),
+(13, 'Edu', 'laura@gmail.com', '$2y$10$y3mb.UUQCTJ9.YMN5bfxa.Ws5.p4Uiorxspfv37hqjS8fzDEoyETK', '2025-09-04', 'Masculino', '12345678901', 'Rua Urusanga'),
+(14, 'Carlos', 'Arthur@gmail.com', '$2y$10$4MeP/0IkbpvgQX3I.xlVtOdf..SqKcml97uxv/vx/d3QIZXHS95DW', '2025-09-18', 'Masculino', '12345678901', 'Rua Urusanga'),
+(16, 'Marcos', 'marcos@gmail.com', '$2y$10$H9PX2674M5sqknON0vujbu9WOueL.3Mpx8sNoUWhX6MSHbAvqXT3.', '2025-09-01', 'Feminino', '01234567890', 'Rua Sesi'),
+(17, 'lucas rafael pereira', 'rafael@gmail.com', '$2y$10$GUBZBtLZXd6s6zmdZjKzz.PY6zXDgUtbhMA4CACmnFBe8/eIzrPfi', '2025-09-16', 'Feminino', '12323232333', 'Rua Sesi'),
+(18, 'jean', 'jeanc@gmail.com', '$2y$10$jnSL6oyRV66/7qCamV8V6es3TRQ8cXUDRbvfZuoBjWw0erSxfWaES', '2025-09-05', 'helicoptero', '12345672201', 'Rua Urusanga');
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `dados_sensores`
+--
+ALTER TABLE `dados_sensores`
+  ADD PRIMARY KEY (`pk_dado_sensor`),
+  ADD KEY `fk_pk_sensor` (`fk_pk_sensor`),
+  ADD KEY `fk_pk_rota` (`fk_pk_rota`);
+
+--
+-- Índices de tabela `manutencao`
+--
+ALTER TABLE `manutencao`
+  ADD PRIMARY KEY (`pk_manutencao`);
+
+--
+-- Índices de tabela `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  ADD PRIMARY KEY (`pk_notificacao`);
+
+--
+-- Índices de tabela `relatorios`
+--
+ALTER TABLE `relatorios`
+  ADD PRIMARY KEY (`pk_relatorio`);
+
+--
+-- Índices de tabela `rotas`
+--
+ALTER TABLE `rotas`
+  ADD PRIMARY KEY (`pk_rota`);
+
+--
+-- Índices de tabela `sensores`
+--
+ALTER TABLE `sensores`
+  ADD PRIMARY KEY (`pk_sensor`);
+
+--
+-- Índices de tabela `trem`
+--
+ALTER TABLE `trem`
+  ADD PRIMARY KEY (`pk_trem`);
+
+--
+-- Índices de tabela `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`pk_usuario`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `dados_sensores`
+--
+ALTER TABLE `dados_sensores`
+  MODIFY `pk_dado_sensor` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `manutencao`
+--
+ALTER TABLE `manutencao`
+  MODIFY `pk_manutencao` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de tabela `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  MODIFY `pk_notificacao` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de tabela `relatorios`
+--
+ALTER TABLE `relatorios`
+  MODIFY `pk_relatorio` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de tabela `rotas`
+--
+ALTER TABLE `rotas`
+  MODIFY `pk_rota` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `sensores`
+--
+ALTER TABLE `sensores`
+  MODIFY `pk_sensor` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `trem`
+--
+ALTER TABLE `trem`
+  MODIFY `pk_trem` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `pk_usuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `dados_sensores`
+--
+ALTER TABLE `dados_sensores`
+  ADD CONSTRAINT `dados_sensores_ibfk_1` FOREIGN KEY (`fk_pk_sensor`) REFERENCES `sensores` (`pk_sensor`),
+  ADD CONSTRAINT `dados_sensores_ibfk_2` FOREIGN KEY (`fk_pk_rota`) REFERENCES `rotas` (`pk_rota`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
