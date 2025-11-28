@@ -1,0 +1,313 @@
+/* === ESTILOS GERAIS === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* === HEADER === */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* menor que o menu lateral */
+    width: 100%;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-left, .nav-center, .nav-right {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.nav-left {
+    justify-content: flex-start;
+}
+
+.nav-center {
+    justify-content: center;
+}
+
+.nav-center h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.nav-right {
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+#menuToggle {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-right .bi-person-circle {
+    font-size: 24px;
+}
+
+.nav-right p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.nav-right a {
+    color: white;
+    text-decoration: none;
+}
+
+.sair-button {
+    background-color: #e74c3c;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.sair-button:hover {
+    background-color: #c0392b;
+}
+
+/* === MENU LATERAL (CORRIGIDO DEFINITIVAMENTE) === */
+#side-menu {
+    background-color: #34495e;
+    color: white;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 9999; /* AGORA o menu fica sempre por cima */
+    padding-top: 60px;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+
+#side-menu.active {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #2c3e50;
+}
+
+.menu-item:hover {
+    background-color: #2c3e50;
+}
+
+/* === CONTEÚDO PRINCIPAL === */
+main {
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1; /* fica abaixo do menu lateral */
+}
+
+.conteudo {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* === CARDS === */
+.card2 {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #3498db;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* === FORMULÁRIOS === */
+.linha-campo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.linha-campo i {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    min-width: 30px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* === BOTÕES === */
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao-salvar {
+    background-color: #27ae60;
+    color: white;
+}
+
+.botao-salvar:hover {
+    background-color: #2ecc71;
+}
+
+.botao-cancelar {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.botao-cancelar:hover {
+    background-color: #95a5a6;
+}
+
+/* === RESPONSIVIDADE === */
+@media screen and (max-width: 767px) {
+    header {
+        padding: 10px;
+        width: 100%;
+    }
+
+    .main-nav {
+        height: 40px;
+        position: relative;
+    }
+
+    .nav-center h1 {
+        font-size: 1.2rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+    }
+
+    .nav-left {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .nav-right {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        gap: 5px;
+    }
+
+    .nav-right .bi-person-circle {
+        display: none;
+    }
+
+    .nav-right p {
+        display: none;
+    }
+
+    .sair-button {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    .card2 {
+        padding: 15px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #side-menu {
+        width: 220px;
+        padding-top: 50px;
+    }
+
+    .menu-item {
+        padding: 12px 18px;
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,366 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-left, .nav-center, .nav-right {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.nav-left {
+    justify-content: flex-start;
+}
+
+.nav-center {
+    justify-content: center;
+}
+
+.nav-center h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.nav-right {
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+#menuToggle {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-right .bi-person-circle {
+    font-size: 24px;
+    color: white !important; 
+}
+
+.nav-right p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.sair-button {
+    background-color: #e74c3c;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sair-button:hover {
+    background-color: #c0392b;
+}
+
+#side-menu {
+    background-color: #34495e;
+    color: white;
+    width: 250px;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px;
+}
+
+#side-menu.active {
+    left: 0;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #2c3e50;
+}
+
+.menu-item:hover {
+    background-color: #2c3e50;
+}
+
+main {
+    padding: 20px;
+}
+
+.conteudo {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.flexivel {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.botao-adicionar, .botao-remover {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.botao-adicionar {
+    background-color: #27ae60;
+    color: white;
+}
+
+.botao-adicionar:hover {
+    background-color: #2ecc71;
+}
+
+.botao-remover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.botao-remover:hover {
+    background-color: #c0392b;
+}
+
+#tremForm {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao-salvar {
+    background-color: #27ae60;
+    color: white;
+}
+
+.botao-salvar:hover {
+    background-color: #2ecc71;
+}
+
+.botao-cancelar {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.botao-cancelar:hover {
+    background-color: #95a5a6;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #2980b9;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.card-text p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.card-text strong {
+    color: #2c3e50;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.delete-btn, .edit-btn {
+    position: absolute;
+    top: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    transition: transform 0.2s;
+}
+
+.delete-btn {
+    right: 15px;
+    color: #e74c3c;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.edit-btn {
+    right: 50px;
+    color: #2980b9;
+}
+
+.edit-btn:hover {
+    transform: scale(1.1);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #7f8c8d;
+    font-size: 18px;
+}
+
+.empty-state i {
+    font-size: 6rem;
+    margin-bottom: 15px;
+    color: #bdc3c7;
+}
+
+@media screen and (max-width: 992px) {
+    .nav-right p {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main-nav {
+        position: relative;
+        height: 60px;
+    }
+
+    .nav-center h1 {
+        font-size: 1.2rem;
+        margin: 20px;
+    }
+
+    .nav-right .bi-person-circle {
+        display: none;
+    }
+
+    .nav-left, .nav-right {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .nav-left { left: 20px; }
+    .nav-right { right: 0; }
+
+    .sair-button {
+        padding: 6px 10px;
+        font-size: 14px;
+        margin: 20px;
+    }
+
+    .flexivel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #tremForm {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
